@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="src/style.css"/>
+    <script src="src/script.js"></script>
+  </head>
+  <body>
+    <select id="div-select">
+      <option value="joule2decibel">W/m^2 to decibels</option>
+      <option value="decibel2joule">Decibels to W/m^2</option>
+      <option value="psi2decibel">PSI to decibels</option>
+      <option value="decibel2psi">Decibels to PSI</option>
+      <option value="decibel2dbm">Decibels to dBm</option>
+      <option value="dbm2decibel">dBm to decibels</option>
+      <option value="mds">Minimum detectable signal</option>
+      <option value="inverse">Inverse square law</option>
+    </select> <br/> <br/>
+    <div id="wrapper">
+      <div id="joule2decibel" class="divs">
+        <label>W/m^2</label>
+        <input id="ui-joule2decibel" class="ui"/>
+      </div>
+      <div id="decibel2joule" class="divs" style="visibility: hidden;">
+        <label>Decibels</label>
+        <input id="ui-decibel2joule" class="ui"/>
+      </div>
+      <div id="psi2decibel" class="divs" style="visibility: hidden;">
+        <label>PSI</label>
+        <input id="ui-psi2decibel" class="ui"/>
+      </div>
+      <div id="decibel2psi" class="divs" style="visibility: hidden;">
+        <label>Decibels</label>
+        <input id="ui-decibel2psi" class="ui"/>
+      </div>
+    </div>
+    <div id="decibel2dbm" class="divs" style="visibility: hidden;">
+      <label>Decibels</label>
+      <input id="ui-decibel2dbm" class="ui"/>
+    </div>
+    <div id="dbm2decibel" class="divs" style="visibility: hidden;">
+      <label>dBm</label>
+      <input id="ui-dbm2decibel" class="ui"/>
+    </div>
+    <div id="mds" class="divs" style="visibility: hidden;">
+      <label>Bandwidth</label>
+      <input id="ui-mds" class="ui"/>
+      <label>Hz</label>
+    </div>
+    <div id="inverse" class="divs" style="visibility: hidden;">
+      <label>Value</label>
+      <input id="ui-inverse-value" class="ui"/>
+      <select id="ui-inverse-value-unit">
+        <option value="unit">Unit</option>
+        <option value="dbm">dBm</option>
+        <option value="db">Decibels</option>
+      </select> <br/> <br/>
+      <label>Distance</label>
+      <input id="ui-inverse-distance" class="ui"/>
+      <select id="ui-inverse-distance-unit">
+        <option value="m">Meters</option>
+        <option value="km">Kilometers</option>
+        <option value="ly">Light years</option>
+      </select>
+    </div>
+    <button id="btn" onclick="calculate();">Calculate</button>
+    <p id="result">Results show here</p> <br/> <br/>
+    <img id="formula" src="img/db.png"/>
+  </body>
+</html>
