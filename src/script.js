@@ -165,7 +165,7 @@ function calculate() {
       let value = document.getElementById('ui-inverse-value').value;
       let distance = document.getElementById('ui-inverse-distance').value;
       let valueUnit = document.getElementById('ui-inverse-value-unit').value;
-      let power = inverse(value, distance).toLocaleString();
+      let power = inverse(value, distance);
       document.getElementById('result').textContent = `${power} ${valueUnit}`;
       return 0;
     }
