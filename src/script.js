@@ -121,44 +121,44 @@ function calculate() {
     case 'joule2decibel': {
       let joules = document.getElementById('ui-joule2decibel').value;
       let decibel = joule2decibel(joules).toLocaleString();
-      document.getElementById('result').textContent = `${decibel} decibels`;
+      document.getElementById('result').textContent = `${decibel.toLocaleString()} decibels`;
       return 0;
     }
     case 'decibel2joule': {
       let decibels = document.getElementById('ui-decibel2joule').value;
       let joules = decibel2joule(decibels).toLocaleString();
-      document.getElementById('result').textContent = `${joules} W/m^2`;
+      document.getElementById('result').textContent = `${joules.toLocaleString()} W/m^2`;
       return 0;
     }
     case 'psi2decibel': {
       let psi = document.getElementById('ui-psi2decibel').value;
       let joules = psi2joule(psi);
       let decibels = joule2decibel(joules).toLocaleString();
-      document.getElementById('result').textContent = `${decibels} decibels`;
+      document.getElementById('result').textContent = `${decibels.toLocaleString()} decibels`;
       return 0;
     }
     case 'decibel2psi': {
       let decibels = document.getElementById('ui-decibel2psi').value;
       let joules = decibel2joule(decibels);
       let psi = joule2psi(joules).toLocaleString();
-      document.getElementById('result').textContent = `${psi} PSI`;
+      document.getElementById('result').textContent = `${psi.toLocaleString()} PSI`;
       return 0;
     }
     case 'decibel2dbm': {
       let decibel = document.getElementById('ui-decibel2dbm').value;
       let dbm = decibel2dbm(decibel);
-      document.getElementById('result').textContent = `${dbm} dBm`;
+      document.getElementById('result').textContent = `${dbm.toLocaleString()} dBm`;
       return 0;
     }
     case 'dbm2decibel': {
       let decibel = dbm2decibel(document.getElementById('ui-dbm2decibel').value).toLocaleString();
-      document.getElementById('result').textContent = `${decibel} decibels`;
+      document.getElementById('result').textContent = `${decibel.toLocaleString()} decibels`;
       return 0;
     }
     case 'mds': {
       let bandwitdth = document.getElementById('ui-mds').value;
       let dbm = mds(bandwitdth);
-      document.getElementById('result').textContent = `${dbm} dBm`;
+      document.getElementById('result').textContent = `${dbm.toLocaleString()} dBm`;
       return 0;
     }
     case 'inverse': {
@@ -166,7 +166,7 @@ function calculate() {
       let distance = document.getElementById('ui-inverse-distance').value;
       let valueUnit = document.getElementById('ui-inverse-value-unit').value;
       let power = inverse(value, distance);
-      document.getElementById('result').textContent = `${power} ${valueUnit}`;
+      document.getElementById('result').textContent = `${power.toLocaleString()} ${valueUnit}`;
       return 0;
     }
   }
