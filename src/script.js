@@ -9,8 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     divs.push(document.getElementById('decibel2dbm'));
     divs.push(document.getElementById('dbm2decibel'));
     divs.push(document.getElementById('mds'));
+    divs.push(document.getElementById("gain"));
     divs.push(document.getElementById('inverse'));
 });
+
+const c = 299792458;
 
 document.addEventListener('input', () => {
     if (document.readyState === 'complete') {
@@ -66,6 +69,16 @@ function dbm2decibel(_dbm) {
     let watts = milliwatts / 1000;
     let decibels = joule2decibel(watts);
     return decibels;
+}
+
+function frequency2wavelength(hz){
+    let wave = c / hz;
+    return wave;
+}
+
+function gain(_efficiency, _aperture, _wavelength){
+    let gain = 10 * Math.log10(4 * Math.PI * _efficiency * _aperture / _wavelength**2);
+    return gain;
 }
 
 function mds(_bandwidth, temp = 2.7) {
@@ -177,9 +190,24 @@ function calculate() {
             let tempUnit = document.getElementById("ui-mds-unit").value;
             if (tempUnit == "c") temp += 273.15;
             if (tempUnit == "f") temp = (temp - 32) * (5/9) + 255.372;
-            console.log(temp)
             let dbm = mds(bandwitdth, temp);
             document.getElementById('result').textContent = `${dbm.toLocaleString()} dBm`;
+            return 0;
+        }
+        case 'gain': {
+            let efficiency = document.getElementById("ui-gain-ef").value;
+            const measureUnit = document.getElementById("gain-ar-select").value;
+            let aperture = document.getElementById("ui-gain-ar").value;
+            if (measureUnit === "ft"){
+                aperture /= 3.28;
+            }
+            const wavelengthOption = document.getElementById("gain-wa-select").value;
+            let wavelength = document.getElementById("ui-gain-wa").value;
+            if (wavelengthOption === "frequency"){
+                wavelength = frequency2wavelength(wavelength);
+            }
+            let gdb = gain(efficiency, aperture, wavelength);
+            document.getElementById("result").textContent = `${gdb.toLocaleString()} dB`;
             return 0;
         }
         case 'inverse': {

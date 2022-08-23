@@ -16,6 +16,7 @@
         <option value="decibel2dbm">Decibels to dBm</option>
         <option value="dbm2decibel">dBm to decibels</option>
         <option value="mds">Minimum detectable signal</option>
+        <option value="gain">Antenna gain</option>
         <option value="inverse">Inverse square law</option>
     </select> <br /> <br />
     <div id="wrapper">
@@ -62,6 +63,21 @@
                 <option value="f">F</option>
             </select>
             <input id="ui-mds-temp" class="ui" value="2.7"/>
+        </div>
+        <div id="gain" class="divs" style="visibility: hidden;">
+            <label>Efficiency %</label>
+            <input id="ui-gain-ef" class="ui"/> <br/>
+            <label>Aperture area</label> <sup>2</sup>
+            <input id="ui-gain-ar" class="ui"/>
+            <select id="gain-ar-select">
+                <option value="m">m</option>
+                <option value="ft">ft</option>
+            </select> <br/>
+            <select id="gain-wa-select">
+                <option value="wavelength">Wavelength</option>
+                <option value="frequency">frequency</option>
+            </select>
+            <input id="ui-gain-wa" class="ui"/>
         </div>
         <div id="inverse" class="divs" style="visibility: hidden;">
             <label>Value</label>
