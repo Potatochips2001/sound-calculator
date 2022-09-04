@@ -1,4 +1,5 @@
 # sound-calculator
+Interesting info: If you convert Boltzmann's constant (1.38e-23) joules to dBm you get -198 dBm
 ### Explanation to minimum detectable signal
 ![](/img/mds.png) <br/>
 k = <a href="https://en.wikipedia.org/wiki/Boltzmann_constant">Boltzmann's constant</a> (1.38064852e-23 J/K) <br/>
