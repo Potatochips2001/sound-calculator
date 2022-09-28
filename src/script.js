@@ -116,7 +116,8 @@ function inverse(_value, _distance) {
             //meters is default value; do nothing
         }
     }
-    let power = _value * (1 / _distance ** 2);
+    //let power = _value * (1 / _distance ** 2); old
+    let power = _value / (4 * Math.PI * _distance**2);
     switch (valueUnit) {
         case 'dbm': {
             power = 10 * Math.log10(power);
