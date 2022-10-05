@@ -216,7 +216,11 @@ function calculate() {
             let distance = document.getElementById('ui-inverse-distance').value;
             let valueUnit = document.getElementById('ui-inverse-value-unit').value;
             let power = inverse(value, distance);
-            document.getElementById('result').textContent = `${power.toLocaleString()} ${valueUnit}`;
+            if (valueUnit == "unit"){
+                document.getElementById("result").textContent = `${power} ${valueUnit}`;
+            } else {
+                document.getElementById("result").textContent = `${power.toLocaleString()} ${valueUnit}`;
+            }
             return 0;
         }
     }
