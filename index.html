@@ -18,6 +18,8 @@
         <option value="mds">Minimum detectable signal</option>
         <option value="gain">Antenna gain</option>
         <option value="inverse">Inverse square law</option>
+        <option value="anti-inverse">Solve-distance Inverse Square Law</option>
+        <option value="anti-inverse-power">Solve-power Inverse Square Law</option>
     </select> <br /> <br />
     <div id="wrapper">
         <div id="joule2decibel" class="divs">
@@ -55,7 +57,7 @@
         <div id="mds" class="divs" style="visibility: hidden;">
             <label>Bandwidth</label>
             <input id="ui-mds" class="ui" />
-            <label>Hz</label> <br />
+            <label>Hz</label> <br /> <br>
             <label>Temperature</label>
             <select id="ui-mds-unit">
                 <option value="k">K</option>
@@ -66,13 +68,13 @@
         </div>
         <div id="gain" class="divs" style="visibility: hidden;">
             <label>Efficiency %</label>
-            <input id="ui-gain-ef" class="ui"/> <br/>
+            <input id="ui-gain-ef" class="ui"/> <br/> <br>
             <label>Aperture area</label> <sup>2</sup>
             <input id="ui-gain-ar" class="ui"/>
             <select id="gain-ar-select">
                 <option value="m">m</option>
                 <option value="ft">ft</option>
-            </select> <br/>
+            </select> <br/> <br>
             <select id="gain-wa-select">
                 <option value="wavelength">Wavelength</option>
                 <option value="frequency">frequency</option>
@@ -93,9 +95,63 @@
                 <option value="m">Meters</option>
                 <option value="km">Kilometers</option>
                 <option value="ly">Light years</option>
+            </select> <br> <br>
+            <label>Intensity Unit</label>
+            <select id="ui-inverse-intensity-unit">
+                <option value="j">Joules</option>
+                <option value="dB">dB</option>
+                <option value="dBm">dBm</option>
             </select>
         </div>
-    </div>
+        <div id="anti-inverse" class="divs" style="visibility: hidden;">
+            <label>Value</label>
+            <input id="ui-anti-inverse-power" class="ui"/>
+
+            <select id="ui-anti-inverse-power-unit" class="ui">
+                <option value="unit">Unit</option>
+                <option value="dB">dB</option>
+                <option value="dBm">dBm</option>
+            </select> <br> <br>
+
+            <label>Remaining Value</label>
+            <input id="ui-anti-inverse-intensity" class="ui"/>
+
+            <select id="ui-anti-inverse-intensity-unit" class="ui">
+                <option value="unit">Unit</option>
+                <option value="dB">dB</option>
+                <option value="dBm">dBm</option>
+            </select> <br> <br>
+
+            <label>Distance Unit</label>
+            <select id="ui-anti-inverse-distance-unit" class="ui">
+                <option value="m" name="Meters">Meters</option>
+                <option value="km" name="Kilometers">Kilometers</option>
+                <option value="ly" name="light years">Light years</option>
+            </select>
+        </div>
+        <div id="anti-inverse-power" class="divs" style="visibility: hidden;">
+            <label>Remaining Value</label>
+            <input id="ui-anti-inverse-power-intensity" class="ui"/>
+            <select id="ui-anti-inverse-power-intensity-unit">
+                <option value="unit">Unit</option>
+                <option value="dB">dB</option>
+                <option value="dBm">dBm</option>
+            </select> <br> <br>
+            <label>Distance</label>
+            <input id="ui-anti-inverse-power-distance" class="ui"/>
+            <select id="ui-anti-inverse-power-distance-unit">
+                <option value="m">Meters</option>
+                <option value="km">Kilometers</option>
+                <option value="ly">Light years</option>
+            </select> <br> <br>
+            <label>Power Unit</label>
+            <select id="ui-anti-inverse-power-power-unit">
+                <option value="j">Joules</option>
+                <option value="dB">dB</option>
+                <option value="dBm">dBm</option>
+            </select>
+        </div>
+    </div> <br>
     <button id="btn" onclick="calculate();">Calculate</button>
     <p id="result">Results show here</p> <br /> <br />
     <img id="formula" src="img/db.png" />

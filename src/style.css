@@ -1,18 +1,21 @@
 body {
-    background-color: #222;
+    background-color: #121212;
     color: #ccc;
 }
 
 .ui {
-    background-color: #333;
+    background-color: #222;
     color: #ccc;
     border-radius: 5px;
+    border-color: transparent;
 }
 
 #btn {
     background-color: #222;
     color: #ccc;
-    margin-top: 10ch;
+    border-color: transparent;
+    border-radius: 5px;
+    margin-top: 24px;
 }
 
 #wrapper {
@@ -24,7 +27,8 @@ body {
 }
 
 select {
-    background-color: #333;
+    background-color: #222;
     color: #ccc;
     border-radius: 5px;
+    border-color: transparent;
 }

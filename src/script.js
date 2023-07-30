@@ -11,15 +11,20 @@ document.addEventListener('DOMContentLoaded', () => {
     divs.push(document.getElementById('mds'));
     divs.push(document.getElementById("gain"));
     divs.push(document.getElementById('inverse'));
+    divs.push(document.getElementById('anti-inverse'));
+    divs.push(document.getElementById('anti-inverse-power'));
 });
 
 const c = 299792458;
+const ly = c * 3600 * 24 * 365;
 
 document.addEventListener('input', () => {
     if (document.readyState === 'complete') {
         let divOption = document.getElementById('div-select').value;
         showOnly(document.getElementById(divOption));
         document.getElementById('formula').src = `img/${divOption}.png`;
+        let divHeight = document.getElementById(divOption).offsetHeight;
+        document.getElementById("btn").style = `margin-top: ${divHeight}px`;
     }
 });
 
@@ -64,6 +69,14 @@ function decibel2dbm(_decibel) {
     return dbm;
 }
 
+function joule2dbm(_joules){
+    return 10 * Math.log10(1e3 * _joules);
+}
+
+function dbm2joule(_dbm){
+    return 10**(_dbm/10) / 1e3;
+}
+
 function dbm2decibel(_dbm) {
     let milliwatts = 10 ** (_dbm / 10);
     let watts = milliwatts / 1000;
@@ -74,6 +87,14 @@ function dbm2decibel(_dbm) {
 function frequency2wavelength(hz){
     let wave = c / hz;
     return wave;
+}
+
+function m2ly(m){
+    return m / ly;
+}
+
+function ly2m(_ly){
+    return ly * _ly;
 }
 
 function gain(_efficiency, _aperture, _wavelength){
@@ -90,41 +111,135 @@ function mds(_bandwidth, temp = 2.7) {
 function inverse(_value, _distance) {
     let valueUnit = document.getElementById('ui-inverse-value-unit').value;
     let distanceUnit = document.getElementById('ui-inverse-distance-unit').value;
-    switch (valueUnit) {
-        case 'dbm': {
-            _value = 10 ** (_value / 10);
+    let intensityUnit = document.getElementById("ui-inverse-intensity-unit").value;
+    switch (valueUnit){
+        case "dB": {
+            _value = decibel2joule(_value);
             break;
         }
-        case 'db': {
-            _value = Math.pow(10, -12) * Math.pow(10, _value / 10);
-            break;
-        }
-        default: {
-            //default is regular units/joules; do nothing
-        }
-    }
-    switch (distanceUnit) {
-        case 'km': {
-            _distance *= 1000;
-            break;
-        }
-        case 'ly': {
-            _distance *= 9.454255e+15;
+        case "dBm": {
+            _value = dbm2joule(_value);
             break;
         }
         default: {
-            //meters is default value; do nothing
-        }
-    }
-    //let power = _value * (1 / _distance ** 2); old
-    let power = _value / (4 * Math.PI * _distance**2);
-    switch (valueUnit) {
-        case 'dbm': {
-            power = 10 * Math.log10(power);
             break;
         }
-        case 'db': {
-            power = 10 * Math.log10(power / Math.pow(10, -12));
+    }
+    switch (distanceUnit){
+        case "km": {
+            _distance /= 1e3;
+            break;
+        }
+        case "ly": {
+            _distance = ly2m(_distance);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    let intensity = _value / (4 * Math.PI * _distance**2);
+    switch (intensityUnit){
+        case "dB": {
+            intensity = joule2decibel(intensity);
+            break;
+        }
+        case "dbm": {
+            intensity = joule2dbm(intensity);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    return intensity;
+}
+
+function anti_inverse(power, intensity){
+    let powerUnit = document.getElementById("ui-anti-inverse-power-unit").value;
+    let intensityUnit = document.getElementById("ui-anti-inverse-intensity-unit").value;
+    let distanceUnit = document.getElementById("ui-anti-inverse-distance-unit").value;
+    switch (powerUnit){
+        case "dB": {
+            power = decibel2joule(power);
+            break;
+        }
+        case "dBm": {
+            power = dbm2joule(power);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    switch (intensityUnit){
+        case "dB": {
+            intensity = decibel2joule(intensity);
+        }
+        case "dBm": {
+            intensity = dbm2joule(intensity);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    let distance = Math.sqrt( power / intensity / Math.PI / 4 );
+    switch (distanceUnit){
+        case "km": {
+            distance /= 1e3;
+            break;
+        }
+        case "ly": {
+            distance = m2ly(distance);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    return distance;
+}
+
+function anti_inverse_power(intensity, distance){
+    let intensityUnit = document.getElementById("ui-anti-inverse-power-intensity-unit").value;
+    let distanceUnit = document.getElementById("ui-anti-inverse-power-distance-unit").value;
+    let powerUnit = document.getElementById("ui-anti-inverse-power-power-unit").value;
+    switch (intensityUnit){
+        case "dB": {
+            intensity = decibel2joule(intensity);
+            break;
+        }
+        case "dBm": {
+            intensity = dbm2joule(intensity);
+        }
+        default: {
+            break;
+        }
+    }
+    switch (distanceUnit){
+        case "km": {
+            distance = distance * 1e3;
+            break;
+        }
+        case "ly": {
+            distance = ly2m(distance);
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    let power = intensity * (4 * Math.PI * distance**2);
+    switch (powerUnit) {
+        case "dB": {
+            power = joule2decibel(power);
+            break;
+        }
+        case "dBm": {
+            power = joule2dbm(power);
+        }
+        default: {
             break;
         }
     }
@@ -150,14 +265,14 @@ function calculate() {
         case 'decibel2joule': {
             let decibels = document.getElementById('ui-decibel2joule').value;
             let joules = decibel2joule(decibels).toLocaleString();
-            document.getElementById('result').textContent = `${joules.toLocaleString()} W/m^2`;
+            document.getElementById('result').textContent = `${joules} W/m^2`;
             return 0;
         }
         case "dbm2joule": {
             let dbm = document.getElementById("ui-dbm2joule").value;
             let decibel = dbm2decibel(dbm);
             let joule = decibel2joule(decibel);
-            document.getElementById("result").textContent = `${joule.toLocaleString()} W/m^2`;
+            document.getElementById("result").textContent = `${joule} W/m^2`;
             return 0;
         }
         case 'psi2decibel': {
@@ -215,12 +330,28 @@ function calculate() {
             let value = document.getElementById('ui-inverse-value').value;
             let distance = document.getElementById('ui-inverse-distance').value;
             let valueUnit = document.getElementById('ui-inverse-value-unit').value;
-            let power = inverse(value, distance);
-            if (valueUnit == "unit"){
-                document.getElementById("result").textContent = `${power} ${valueUnit}`;
-            } else {
-                document.getElementById("result").textContent = `${power.toLocaleString()} ${valueUnit}`;
-            }
+            let uiIntensitySelectedIndex = document.getElementById("ui-inverse-intensity-unit").selectedIndex;
+            let uiIntensityUnit = document.getElementById("ui-inverse-intensity-unit")[uiIntensitySelectedIndex].text;
+            let intensity = inverse(value, distance);
+            document.getElementById('result').textContent = `${intensity.toLocaleString()} ${uiIntensityUnit}`;
+            return 0;
+        }
+        case "anti-inverse": {
+            let uiPower = document.getElementById("ui-anti-inverse-power").value;
+            let uiIntensity = document.getElementById("ui-anti-inverse-intensity").value;
+            let uiDistanceSelectIndex = document.getElementById("ui-anti-inverse-distance-unit").selectedIndex;
+            let uiDistanceUnit = document.getElementById("ui-anti-inverse-distance-unit")[uiDistanceSelectIndex].text;
+            let distance = anti_inverse(uiPower, uiIntensity);
+            document.getElementById("result").textContent = `${distance.toLocaleString()} ${uiDistanceUnit.toLowerCase()}`;
+            return 0;
+        }
+        case "anti-inverse-power": {
+            let uiIntensity = document.getElementById("ui-anti-inverse-power-intensity").value;
+            let uiDistance = document.getElementById("ui-anti-inverse-power-distance").value;
+            let uiPowerSelectIndex = document.getElementById("ui-anti-inverse-power-power-unit").selectedIndex;
+            let uiPowerUnit = document.getElementById("ui-anti-inverse-power-unit")[uiPowerSelectIndex].text;
+            let power = anti_inverse_power(uiIntensity, uiDistance);
+            document.getElementById("result").textContent = `${power.toLocaleString()} ${uiPowerUnit}`;
             return 0;
         }
     }
