@@ -144,7 +144,7 @@ function inverse(_value, _distance) {
             intensity = joule2decibel(intensity);
             break;
         }
-        case "dbm": {
+        case "dBm": {
             intensity = joule2dbm(intensity);
             break;
         }
