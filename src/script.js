@@ -127,7 +127,7 @@ function inverse(_value, _distance) {
     }
     switch (distanceUnit){
         case "km": {
-            _distance /= 1e3;
+            _distance *= 1e3;
             break;
         }
         case "ly": {
