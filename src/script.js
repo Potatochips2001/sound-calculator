@@ -155,6 +155,7 @@ function inverse(_value, _distance) {
     return intensity;
 }
 
+// solve for distance
 function anti_inverse(power, intensity){
     let powerUnit = document.getElementById("ui-anti-inverse-power-unit").value;
     let intensityUnit = document.getElementById("ui-anti-inverse-intensity-unit").value;
@@ -175,6 +176,7 @@ function anti_inverse(power, intensity){
     switch (intensityUnit){
         case "dB": {
             intensity = decibel2joule(intensity);
+            break;
         }
         case "dBm": {
             intensity = dbm2joule(intensity);
@@ -201,6 +203,7 @@ function anti_inverse(power, intensity){
     return distance;
 }
 
+// solve for power
 function anti_inverse_power(intensity, distance){
     let intensityUnit = document.getElementById("ui-anti-inverse-power-intensity-unit").value;
     let distanceUnit = document.getElementById("ui-anti-inverse-power-distance-unit").value;
@@ -333,25 +336,27 @@ function calculate() {
             let uiIntensitySelectedIndex = document.getElementById("ui-inverse-intensity-unit").selectedIndex;
             let uiIntensityUnit = document.getElementById("ui-inverse-intensity-unit")[uiIntensitySelectedIndex].text;
             let intensity = inverse(value, distance);
-            document.getElementById('result').textContent = `${intensity.toLocaleString()} ${uiIntensityUnit}`;
+            document.getElementById('result').textContent = `${intensity} ${uiIntensityUnit}`;
             return 0;
         }
+        // solve for distance
         case "anti-inverse": {
             let uiPower = document.getElementById("ui-anti-inverse-power").value;
             let uiIntensity = document.getElementById("ui-anti-inverse-intensity").value;
             let uiDistanceSelectIndex = document.getElementById("ui-anti-inverse-distance-unit").selectedIndex;
             let uiDistanceUnit = document.getElementById("ui-anti-inverse-distance-unit")[uiDistanceSelectIndex].text;
             let distance = anti_inverse(uiPower, uiIntensity);
-            document.getElementById("result").textContent = `${distance.toLocaleString()} ${uiDistanceUnit.toLowerCase()}`;
+            document.getElementById("result").textContent = `${distance} ${uiDistanceUnit.toLowerCase()}`;
             return 0;
         }
+        // solve for power
         case "anti-inverse-power": {
             let uiIntensity = document.getElementById("ui-anti-inverse-power-intensity").value;
             let uiDistance = document.getElementById("ui-anti-inverse-power-distance").value;
             let uiPowerSelectIndex = document.getElementById("ui-anti-inverse-power-power-unit").selectedIndex;
             let uiPowerUnit = document.getElementById("ui-anti-inverse-power-unit")[uiPowerSelectIndex].text;
             let power = anti_inverse_power(uiIntensity, uiDistance);
-            document.getElementById("result").textContent = `${power.toLocaleString()} ${uiPowerUnit}`;
+            document.getElementById("result").textContent = `${power} ${uiPowerUnit}`;
             return 0;
         }
     }
