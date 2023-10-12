@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const c = 299792458;
-const ly = c * 3600 * 24 * 365;
+const ly = c * 86400 * 365.25;
 
 document.addEventListener('input', () => {
     if (document.readyState === 'complete') {
