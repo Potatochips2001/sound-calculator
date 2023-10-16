@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     divs.push(document.getElementById('inverse'));
     divs.push(document.getElementById('anti-inverse'));
     divs.push(document.getElementById('anti-inverse-power'));
+    divs.push(document.getElementById('watt2jansky'));
+    divs.push(document.getElementById('jansky2watt'));
 });
 
 const c = 299792458;
@@ -97,8 +99,8 @@ function ly2m(_ly){
     return ly * _ly;
 }
 
-function gain(_efficiency, _aperture, _wavelength){
-    let gain = 10 * Math.log10(4 * Math.PI * _efficiency * _aperture / _wavelength**2);
+function gain(efficiency, diameter, wavelength){
+    let gain = ( (Math.PI**2 * diameter**2) / wavelength**2 ) * efficiency;
     return gain;
 }
 
@@ -249,6 +251,15 @@ function anti_inverse_power(intensity, distance){
     return power;
 }
 
+function watt2jansky(watts, frequency){
+    let janskys = (watts / 10**-26) / frequency;
+    return janskys;
+}
+function jansky2watt(janskys, frequency){
+    let watts = janskys * frequency * 10**-26
+    return watts;
+}
+
 function calculate() {
     let uiSelect = document.getElementById('div-select').value;
     switch (uiSelect) {
@@ -315,18 +326,15 @@ function calculate() {
         }
         case 'gain': {
             let efficiency = document.getElementById("ui-gain-ef").value;
-            const measureUnit = document.getElementById("gain-ar-select").value;
-            let aperture = document.getElementById("ui-gain-ar").value;
-            if (measureUnit === "ft"){
-                aperture /= 3.28;
-            }
-            const wavelengthOption = document.getElementById("gain-wa-select").value;
-            let wavelength = document.getElementById("ui-gain-wa").value;
-            if (wavelengthOption === "frequency"){
-                wavelength = frequency2wavelength(wavelength);
-            }
-            let gdb = gain(efficiency, aperture, wavelength);
-            document.getElementById("result").textContent = `${gdb.toLocaleString()} dB`;
+            efficiency /= 100;
+            let diameter = document.getElementById("ui-gain-diameter").value;
+            let diameterUnit = document.getElementById("ui-gain-diameter-unit").value;
+            if (diameterUnit == 'ft') diameter *= 0.3048;
+            let wavelength = document.getElementById("ui-gain-wavelength").value;
+            let usingFrequency = document.getElementById("ui-gain-wavelength-option").value === 'frequency';
+            if (usingFrequency) wavelength = frequency2wavelength(wavelength);
+            let _gain = gain(efficiency, diameter, wavelength);
+            document.getElementById("result").textContent = `Gain = ${_gain}`;
             return 0;
         }
         case 'inverse': {
@@ -358,6 +366,20 @@ function calculate() {
             let power = anti_inverse_power(uiIntensity, uiDistance);
             document.getElementById("result").textContent = `${power} ${uiPowerUnit}`;
             return 0;
+        }
+        case "watt2jansky": {
+            let watts = document.getElementById("ui-watt2jansky-watt").value;
+            let frequency = document.getElementById("ui-watt2jansky-frequency").value;
+            let janskys = watt2jansky(watts, frequency);
+            document.getElementById("result").textContent = `${janskys} janskys`;
+            break;
+        }
+        case "jansky2watt": {
+            let janskys = document.getElementById("ui-jansky2watt-jansky").value;
+            let frequency = document.getElementById("ui-jansky2watt-frequency").value;
+            let watts = jansky2watt(janskys, frequency);
+            document.getElementById("result").textContent = `${watts} W/m^2`;
+            break;
         }
     }
     return 1;
